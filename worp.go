@@ -16,8 +16,7 @@ func main() {
 
     flag.Parse()
     if flag.NArg() == 0 {
-        flag.Usage()
-        os.Exit(1)
+        displayUsageAndExit()
     }
 
     scanner := bufio.NewScanner(os.Stdin)
@@ -31,4 +30,9 @@ func main() {
     if err := scanner.Err(); err != nil {
         fmt.Fprintln(os.Stderr, "reading standard input:", err)
     }
+}
+
+func displayUsageAndExit() {
+    flag.Usage()
+    os.Exit(1)
 }
