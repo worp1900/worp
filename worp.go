@@ -4,32 +4,44 @@ import (
     "flag"
     "fmt"
     "os"
-    "bufio"
+    "github.com/worp1900/worp/git"
 )
 
 func main() {
     flag.Usage = func() {
+        fmt.Printf("\n")
         fmt.Printf("Usage of %s:\n", os.Args[0])
-        fmt.Printf("    cat file1 file2 ...\n")
+        fmt.Printf("    worp package command [arguments]\n")
+        fmt.Printf("\n")
+        fmt.Printf("Available packages:\n")
+        fmt.Printf("    git\n")
         flag.PrintDefaults()
     }
 
     flag.Parse()
+
     if flag.NArg() == 0 {
+        displayWelcomeMessage()
         displayUsageAndExit()
     }
 
-    scanner := bufio.NewScanner(os.Stdin)
-    for scanner.Scan() {
-        line := scanner.Text()
-        if line == "exit" {
-            os.Exit(0)
-        }
-        fmt.Println(line) // Println will add back the final '\n'
+    packageName := flag.Arg(0)
+    fmt.Printf("You called %s\n", packageName)
+
+    switch packageName {
+        case "git":
+            fmt.Printf("calling git package\n")
+            git.Checkout()
+        default:
+            fmt.Printf("no package found\n")
+            displayUsageAndExit()
     }
-    if err := scanner.Err(); err != nil {
-        fmt.Fprintln(os.Stderr, "reading standard input:", err)
-    }
+}
+
+func displayWelcomeMessage() {
+    fmt.Printf("\n")
+    fmt.Printf("Welcome to worp's utility")
+    fmt.Printf("\n")
 }
 
 func displayUsageAndExit() {

@@ -1,7 +1,18 @@
 
+package git
 
+import (
+    "fmt"
+)
+
+func init() {
+    // Do some init magic?
+}
 
 // checkout branch and pull from remote
+func Checkout() {
+    fmt.Printf("Hello World!")
+}
 
 // commit with message, appending branch name in the front of the comment
 // make appending the commend configurable via a config file
