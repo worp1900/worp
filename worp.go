@@ -1,21 +1,34 @@
 package main
 
 import (
+    "flag"
     "fmt"
     "os"
-    "flag"
+    "bufio"
 )
 
 func main() {
-    fmt.Printf("hello, world\n")
+    flag.Usage = func() {
+        fmt.Printf("Usage of %s:\n", os.Args[0])
+        fmt.Printf("    cat file1 file2 ...\n")
+        flag.PrintDefaults()
+    }
 
-    cmd := os.Args[0]
-    fmt.Printf("Program Name: %s\n", cmd)
+    flag.Parse()
+    if flag.NArg() == 0 {
+        flag.Usage()
+        os.Exit(1)
+    }
 
-    argCount := len(os.Args[1:])
-    fmt.Printf("Total arguments: %d\n", argCount)
-
-    for i, a := range os.Args[1:] {
-    	fmt.Printf("Argument %d is %s\n", i+1, a)
+    scanner := bufio.NewScanner(os.Stdin)
+    for scanner.Scan() {
+        line := scanner.Text()
+        if line == "exit" {
+            os.Exit(0)
+        }
+        fmt.Println(line) // Println will add back the final '\n'
+    }
+    if err := scanner.Err(); err != nil {
+        fmt.Fprintln(os.Stderr, "reading standard input:", err)
     }
 }
