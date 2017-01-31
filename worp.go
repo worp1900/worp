@@ -4,7 +4,7 @@ import (
     "flag"
     "fmt"
     "os"
-    "github.com/worp1900/worp/git"
+    "github.com/worp1900/worp/commit"
 )
 
 func main() {
@@ -26,12 +26,10 @@ func main() {
     }
 
     packageName := flag.Arg(0)
-    fmt.Printf("You called %s\n", packageName)
 
     switch packageName {
-        case "git":
-            fmt.Printf("calling git package\n")
-            git.Checkout()
+        case "commit":
+            commit.Checkout()
         default:
             fmt.Printf("no package found\n")
             displayUsageAndExit()

@@ -1,12 +1,13 @@
 
-package git
+package commit
 
 import (
     "fmt"
+    "os"
 )
 
 func init() {
-    // Do some init magic?
+    // Detect which CVS is present by its hidden folder
 }
 
 // checkout branch and pull from remote
@@ -25,3 +26,10 @@ func Checkout() {
 // delete all local branches but the one you are currently on
 
 // merge with --no-ff flag
+
+func detectCvs (path string) (bool, err) {
+    _, err = os.Stat(path)
+    if err == nil { return true, nil }
+    if os.IsNotExists(err) { return false, nil }
+    return true, err
+}
