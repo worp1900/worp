@@ -6,20 +6,20 @@ import (
     "os"
 )
 
-type Csv struct {
+type Cvs struct {
     category string
 }
 
+var cvs = Cvs{}
+
 func init() {
     // Detect which CVS is present by its hidden folder
-    cvs := Csv{}
-
-    fmt.Printf("%v", cvs)
+    cvs.category = detectCvs()
 }
 
 // checkout branch and pull from remote
 func Checkout() {
-    fmt.Printf("Hello World!")
+    fmt.Printf("Doing %v checkout", cvs.category)
 }
 
 // commit with message, appending branch name in the front of the comment
@@ -34,7 +34,18 @@ func Checkout() {
 
 // merge with --no-ff flag
 
-func isFolderPresent (path string) (bool, error) {
+func detectCvs() (string) {
+    git, err := isFolderPresent("/home/worp/repositories/github/niftySnippets/.git")
+    if err != nil { panic(err) }
+    
+    var cvs string
+    if git == true { cvs = "git" }
+
+    fmt.Printf("Detected cvs in path is: %v\n", cvs)
+    return cvs
+}
+
+func isFolderPresent(path string) (bool, error) {
     _, err := os.Stat(path)
     if err == nil { return true, nil }
     if os.IsNotExist(err) { return false, nil }
