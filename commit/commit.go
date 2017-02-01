@@ -6,8 +6,15 @@ import (
     "os"
 )
 
+type Csv struct {
+    category string
+}
+
 func init() {
     // Detect which CVS is present by its hidden folder
+    cvs := Csv{}
+
+    fmt.Printf("%v", cvs)
 }
 
 // checkout branch and pull from remote
@@ -27,9 +34,9 @@ func Checkout() {
 
 // merge with --no-ff flag
 
-func detectCvs (path string) (bool, err) {
-    _, err = os.Stat(path)
+func isFolderPresent (path string) (bool, error) {
+    _, err := os.Stat(path)
     if err == nil { return true, nil }
-    if os.IsNotExists(err) { return false, nil }
+    if os.IsNotExist(err) { return false, nil }
     return true, err
 }

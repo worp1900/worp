@@ -18,7 +18,7 @@ func main() {
         fmt.Printf("    worp package command [arguments]\n")
         fmt.Printf("\n")
         fmt.Printf("Available packages:\n")
-        fmt.Printf("    git\n")
+        fmt.Printf("    commit\n")
         flag.PrintDefaults()
     }
 
