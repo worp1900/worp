@@ -8,6 +8,10 @@ import (
 )
 
 func main() {
+    
+    // Establish a worp setup functionality to create config files et al
+    // Read a config file - is there an init() function for main()?
+
     flag.Usage = func() {
         fmt.Printf("\n")
         fmt.Printf("Usage of %s:\n", os.Args[0])
