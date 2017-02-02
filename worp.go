@@ -4,20 +4,21 @@ import (
     "flag"
     "fmt"
     "os"
-    "github.com/worp1900/worp/commit"
+    "github.com/worp1900/worp/cvs"
 )
 
 func main() {
-    
     // Establish a worp setup functionality to create config files et al
     // Read a config file - is there an init() function for main()?
 
     flag.Usage = func() {
         fmt.Printf("\n")
         fmt.Printf("Usage of %s:\n", os.Args[0])
-        fmt.Printf("    worp package command [arguments]\n")
+        fmt.Printf("    worp command [arguments]\n")
         fmt.Printf("\n")
-        fmt.Printf("Available packages:\n")
+        fmt.Printf("Available commands:\n")
+        fmt.Printf("    pull\n")
+        fmt.Printf("    push\n")
         fmt.Printf("    commit\n")
         flag.PrintDefaults()
     }
@@ -29,13 +30,17 @@ func main() {
         displayUsageAndExit()
     }
 
-    packageName := flag.Arg(0)
+    command := flag.Arg(0)
 
-    switch packageName {
+    switch command {
         case "commit":
-            commit.Checkout()
+            cvs.Commit()
+        case "pull":
+            cvs.Pull()
+        case "push":
+            cvs.Push()
         default:
-            fmt.Printf("no package found\n")
+            fmt.Printf("unknown command\n")
             displayUsageAndExit()
     }
 }
