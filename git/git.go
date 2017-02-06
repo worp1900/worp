@@ -7,6 +7,12 @@ import (
     "os/exec"
 )
 
+type Command struct {
+    command string
+    parameters []string
+    output string
+}
+
 func init() {
     // Do some init magic
 }
@@ -56,3 +62,13 @@ func Commit() {
 // delete all local branches but the one you are currently on
 
 // merge with --no-ff flag
+
+func execute(cmd Command) (bool){
+    fmt.Println(cmd)
+    return true
+}
+
+
+
+
+
