@@ -29,6 +29,7 @@ func prepare() {
 // pull from remote
 func Pull() {
     prepare()
+    // delete code duplication
     switch cvs.category {
         case "git":
             git.Pull()
@@ -36,7 +37,6 @@ func Pull() {
             fmt.Printf("Unable to detect known cvs system")
     }
 }
-
 
 // push to remote
 func Push() {
@@ -60,6 +60,17 @@ func Commit() {
     }
 }
 
+// delete all local branches but the one you are currently on
+func DeleteOldBranches() {
+    prepare()
+    switch cvs.category {
+        case "git":
+            git.DeleteOldBranches()
+        default:
+            fmt.Printf("Unable to detect known cvs system")
+    }
+}
+
 // commit with message, appending branch name in the front of the comment
 // make appending the commend configurable via a config file
 
@@ -68,14 +79,12 @@ func Commit() {
 
 // delete remote branch
 
-// delete all local branches but the one you are currently on
-
 // merge with --no-ff flag
 
 func detectCvs() (string) {
     git, err := isFolderPresent(path + "/.git")
     if err != nil { panic(err) }
-    
+
     var cvs string
     if git == true {
         fmt.Printf("detected git cvs in %v\n", path)

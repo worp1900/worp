@@ -20,6 +20,8 @@ func main() {
         fmt.Printf("    pull\n")
         fmt.Printf("    push\n")
         fmt.Printf("    commit\n")
+        fmt.Printf("    deleteOldBranches\n")
+        fmt.Printf("    \n")
         flag.PrintDefaults()
     }
 
@@ -39,6 +41,8 @@ func main() {
             cvs.Pull()
         case "push":
             cvs.Push()
+        case "deleteOldBranches":
+            cvs.DeleteOldBranches()
         default:
             fmt.Printf("unknown command\n")
             displayUsageAndExit()

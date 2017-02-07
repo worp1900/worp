@@ -20,31 +20,15 @@ func init() {
 // pull from remote
 func Pull() {
     fmt.Println("Pulling...")
-
-    var cmdOut []byte
-    var err error
-
-    if cmdOut, err = exec.Command("git", "pull").Output(); err != nil {
-        fmt.Fprintln(os.Stderr, "There was an error running git pull: ", err)
-        os.Exit(1)
-    }
-
-    fmt.Println(string(cmdOut))
+    params := []string{"push"}
+    execute(Command{"git", params, ""})
 }
 
 // push to remote
 func Push() {
     fmt.Println("Pushing...")
-
-    var cmdOut []byte
-    var err error
-
-    if cmdOut, err = exec.Command("git", "push").Output(); err != nil {
-        fmt.Fprintln(os.Stderr, "There was an error running git push: ", err)
-        os.Exit(1)
-    }
-
-    fmt.Println(string(cmdOut))
+    params := []string{"push"}
+    execute(Command{"git", params, ""})
 }
 
 // checkout branch and pull from remote
@@ -60,12 +44,26 @@ func Commit() {
 // delete remote branch
 
 // delete all local branches but the one you are currently on
+func DeleteOldBranches() {
+    // Add user confirmation with a warning that this will FORCE delete!!!
+    params := []string{ "branch | grep -v \"master\" | grep -v \\* | xargs git branch -D" }
+    execute(Command{"git", params, ""})
+}
 
 // merge with --no-ff flag
 
 func execute(cmd Command) (bool){
-    fmt.Println(cmd)
-    return true
+   var cmdOut []byte
+   var err error
+
+   if cmdOut, err = exec.Command(cmd.command, cmd.parameters...).Output(); err != nil {
+       fmt.Fprintf(os.Stderr, "There was an error running %v %s: %v\n", cmd.command, cmd.parameters, err)
+       fmt.Printf("%v", err)
+       os.Exit(1)
+   }
+
+   fmt.Println(string(cmdOut))
+   return true
 }
 
 
