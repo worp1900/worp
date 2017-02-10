@@ -53,17 +53,18 @@ func DeleteOldBranches() {
 // merge with --no-ff flag
 
 func execute(cmd Command) (bool){
-   var cmdOut []byte
-   var err error
-
-   if cmdOut, err = exec.Command(cmd.command, cmd.parameters...).Output(); err != nil {
-       fmt.Fprintf(os.Stderr, "There was an error running %v %s: %v\n", cmd.command, cmd.parameters, err)
-       fmt.Printf("%v", err)
-       os.Exit(1)
-   }
-
-   fmt.Println(string(cmdOut))
-   return true
+    cmd := exec.Command("find", "/", "-maxdepth", "1", "-exec", "wc", "-c", "{}", "\\")
+    var out bytes.Buffer
+    var stderr bytes.Buffer
+    cmd.Stdout = &out
+    cmd.Stderr = &stderr
+    err := cmd.Run()
+    if err != nil {
+    fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
+        return
+    }
+    fmt.Println("Result: " + out.String())
+    return true
 }
 
 
