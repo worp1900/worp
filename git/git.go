@@ -5,6 +5,7 @@ import (
     "fmt"
     "os"
     "os/exec"
+    "bytes"
 )
 
 type Command struct {
@@ -52,8 +53,8 @@ func DeleteOldBranches() {
 
 // merge with --no-ff flag
 
-func execute(cmd Command) (bool){
-    cmd := exec.Command("find", "/", "-maxdepth", "1", "-exec", "wc", "-c", "{}", "\\")
+func execute(command Command) (bool){
+    cmd := exec.Command(command.command, command.parameters...)
     var out bytes.Buffer
     var stderr bytes.Buffer
     cmd.Stdout = &out
@@ -61,13 +62,8 @@ func execute(cmd Command) (bool){
     err := cmd.Run()
     if err != nil {
     fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
-        return
+    os.Exit(1)
     }
     fmt.Println("Result: " + out.String())
     return true
 }
-
-
-
-
-
