@@ -33,10 +33,14 @@ func Push() {
 }
 
 // checkout branch and pull from remote
-func Commit() {
-}
 
 // commit with message, appending branch name in the front of the comment
+func Commit(message string) {
+    fmt.Println("Commiting")
+    params := []string{"commit", "-m "+message}
+    execute(Command{"git", params, ""})
+}
+
 // make appending the commend configurable via a config file
 
 // create branch both locally and remotely and check it out

@@ -50,11 +50,11 @@ func Push() {
 }
 
 // checkout branch and pull from remote
-func Commit() {
+func Commit(message string) {
     prepare()
     switch cvs.category {
         case "git":
-            git.Commit()
+            git.Commit(message)
         default:
             fmt.Printf("Unable to detect known cvs system")
     }

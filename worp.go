@@ -19,7 +19,7 @@ func main() {
         fmt.Printf("Available commands:\n")
         fmt.Printf("    pull\n")
         fmt.Printf("    push\n")
-        fmt.Printf("    commit\n")
+        fmt.Printf("    commit message\n")
         fmt.Printf("    deleteOldBranches\n")
         fmt.Printf("    \n")
         flag.PrintDefaults()
@@ -36,7 +36,18 @@ func main() {
 
     switch command {
         case "commit":
-            cvs.Commit()
+            message := flag.Arg(1)
+
+            fmt.Println(message)
+ 
+            if flag.NArg() == 1 {
+                fmt.Printf("\n")
+                fmt.Printf("Could not detect necessary message parameter - exiting")
+                fmt.Printf("\n")
+                displayUsageAndExit()
+            }
+
+            cvs.Commit(message)
         case "pull":
             cvs.Pull()
         case "push":
