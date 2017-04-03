@@ -6,6 +6,7 @@ import (
     "os"
     "os/exec"
     "bytes"
+    "strings"
 )
 
 type Command struct {
@@ -37,7 +38,10 @@ func Push() {
 // commit with message, appending branch name in the front of the comment
 func Commit(message string) {
     fmt.Println("Commiting")
-    params := []string{"commit", "-m "+message}
+
+    currentBranchName := getCurrentBranchName()
+
+    params := []string{"commit", "-m " + currentBranchName + ": " + message}
     execute(Command{"git", params, ""})
 }
 
@@ -57,17 +61,36 @@ func DeleteOldBranches() {
 
 // merge with --no-ff flag
 
-func execute(command Command) (bool){
+// ================ HELPERS ================
+
+func execute(command Command) (string){
     cmd := exec.Command(command.command, command.parameters...)
+
     var out bytes.Buffer
     var stderr bytes.Buffer
+
     cmd.Stdout = &out
     cmd.Stderr = &stderr
     err := cmd.Run()
+
     if err != nil {
-    fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
-    os.Exit(1)
+        fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
+        os.Exit(1)
     }
-    fmt.Println("Result: " + out.String())
-    return true
+    return out.String()
+}
+
+func getCurrentBranchName() (string){
+    params := []string{"branch"}
+    result := strings.Split(execute(Command{"git", params, ""}), "\n")
+
+    for _,value := range result {
+        position := strings.Index(value, "* ") 
+        if position != -1 {
+            fmt.Printf("value: %v at %v\n", value, position)
+        }
+    }
+
+    os.Exit(1)
+    return strings.Join(result, ",")
 }
