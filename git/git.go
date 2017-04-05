@@ -86,11 +86,14 @@ func execute(command Command) (string){
 func getCurrentBranchName() (string){
     params := []string{"branch"}
     result := strings.Split(execute(Command{"git", params, ""}), "\n")
+    var branchName string
 
     for _,value := range result {
         position := strings.Index(value, "* ") 
         if position != -1 {
-            fmt.Printf("value: %v at %v\n", value, position)
+            words := strings.Split(value, " ")
+            branchName = words[1]
+            pf("branchName: %v", branchName)
         }
     }
 
