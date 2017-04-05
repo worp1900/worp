@@ -15,6 +15,9 @@ type Command struct {
     output string
 }
 
+var p = fmt.Println
+var pf = fmt.Printf
+
 func init() {
     // Do some init magic
 }
