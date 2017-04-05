@@ -19,7 +19,7 @@ var p = fmt.Println
 var pf = fmt.Printf
 
 func init() {
-    // Do some init magic
+    // Do some init magic?
 }
 
 // pull from remote
@@ -44,8 +44,14 @@ func Commit(message string) {
 
     currentBranchName := getCurrentBranchName()
 
-    params := []string{"commit", "-m " + currentBranchName + ": " + message}
-    execute(Command{"git", params, ""})
+    if(currentBranchName != "") {
+        params := []string{"commit", "-m " + currentBranchName + ": " + message}
+        execute(Command{"git", params, ""})
+    } else {
+        p("Could not detect branch name. Exiting...")
+        os.Exit(1)
+    }
+
 }
 
 // make appending the commend configurable via a config file
@@ -92,11 +98,10 @@ func getCurrentBranchName() (string){
         position := strings.Index(value, "* ") 
         if position != -1 {
             words := strings.Split(value, " ")
-            branchName = words[1]
-            pf("branchName: %v", branchName)
+            branchName = strings.Trim(words[1], "\n")
+            return branchName
         }
     }
 
-    os.Exit(1)
-    return strings.Join(result, ",")
+    return ""
 }
