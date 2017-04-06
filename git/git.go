@@ -45,7 +45,7 @@ func Commit(message string) {
     currentBranchName := getCurrentBranchName()
 
     if(currentBranchName != "") {
-        params := []string{"commit", "-m " + currentBranchName + ": " + message}
+        params := []string{"commit", "-m " + currentBranchName + " " + message}
         execute(Command{"git", params, ""})
     } else {
         p("Could not detect branch name. Exiting...")
